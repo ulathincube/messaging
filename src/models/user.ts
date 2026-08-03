@@ -20,7 +20,7 @@ async function createUser(fullname: string, email: string) {
   }
 }
 
-async function searchUser(email: string) {
+async function findUser(email: string) {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -38,4 +38,4 @@ async function searchUser(email: string) {
   }
 }
 
-export { createUser };
+export { createUser, findUser };
