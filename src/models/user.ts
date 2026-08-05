@@ -6,12 +6,12 @@
 
 import prisma from '../lib/prisma.js';
 
-async function createUser(fullname: string, email: string) {
+async function createUser(email: string, password: string) {
   try {
     const user = await prisma.user.create({
       data: {
-        fullname,
         email,
+        password,
       },
     });
     return user;

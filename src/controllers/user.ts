@@ -1,5 +1,7 @@
 import { createUser, findUser } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
+import { User } from '../lib/zod.js';
+import { hashPassword } from '../lib/bcrypt.js';
 
 async function createUserController(
   req: Request,
@@ -7,8 +9,10 @@ async function createUserController(
   next: NextFunction,
 ) {
   try {
-    const user = await createUser('name', 'email');
-    res
+    const { email, password } = User.parse(req.body);
+
+    const user = await createUser(email, await hashPassword(password));
+    return res
       .status(201)
       .json({ message: 'User successfully created', error: null, data: user });
   } catch (error) {
