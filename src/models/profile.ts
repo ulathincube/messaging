@@ -1,6 +1,6 @@
 import prisma from '../lib/prisma.js';
 
-async function createProfile(status: string, email: string) {
+async function createProfile(email: string, status: string) {
   try {
     const profile = await prisma.profile.create({
       data: {

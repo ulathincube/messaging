@@ -5,4 +5,19 @@ const User = z.object({
   password: z.string(),
 });
 
-export { User };
+const Message = z.object({
+  text: z.string(),
+  sender: z.email(),
+  receiver: z.email(),
+});
+
+const Query = z.object({
+  query: z.email(),
+});
+
+const Profile = z.object({
+  email: z.email(),
+  status: z.string(),
+});
+
+export { User, Message, Query, Profile };

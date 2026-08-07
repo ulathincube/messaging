@@ -26,10 +26,12 @@ async function findUser(email: string) {
       where: {
         email,
       },
-      include: {
+      select: {
+        user_id: true,
+        email: true,
+        profile: true,
         sentMessages: true,
         receivedMessages: true,
-        profile: true,
       },
     });
     return user;

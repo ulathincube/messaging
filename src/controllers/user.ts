@@ -1,6 +1,6 @@
 import { createUser, findUser } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
-import { User } from '../lib/zod.js';
+import { User, Query } from '../lib/zod.js';
 import { hashPassword } from '../lib/bcrypt.js';
 
 async function createUserController(
@@ -26,9 +26,11 @@ async function findUserController(
   next: NextFunction,
 ) {
   try {
-    const { query } = req.query;
+    const { query } = Query.parse(req.query);
+
+    console.log(query);
     //  zod
-    const user = await findUser('email');
+    const user = await findUser(query);
     if (!user)
       return res
         .status(404)

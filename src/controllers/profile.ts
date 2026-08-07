@@ -1,5 +1,6 @@
 import { createProfile } from '../models/profile.js';
 import type { Request, Response, NextFunction } from 'express';
+import { Profile } from '../lib/zod.js';
 
 async function createProfileController(
   req: Request,
@@ -7,7 +8,8 @@ async function createProfileController(
   next: NextFunction,
 ) {
   try {
-    const response = await createProfile('status', 'email');
+    const { email, status } = Profile.parse(req.body);
+    const response = await createProfile(email, status);
     return res.status(201).json({
       data: response,
       error: null,
