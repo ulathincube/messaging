@@ -30,8 +30,28 @@ async function findUser(email: string) {
         user_id: true,
         email: true,
         profile: true,
-        sentMessages: true,
-        receivedMessages: true,
+        sentMessages: {
+          include: {
+            receiver: {
+              select: {
+                email: true,
+                user_id: true,
+                profile: true,
+              },
+            },
+          },
+        },
+        receivedMessages: {
+          include: {
+            sender: {
+              select: {
+                email: true,
+                user_id: true,
+                profile: true,
+              },
+            },
+          },
+        },
       },
     });
     return user;
