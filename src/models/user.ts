@@ -54,10 +54,29 @@ async function findUser(email: string) {
         },
       },
     });
+
     return user;
   } catch (error) {
     throw error;
   }
 }
 
-export { createUser, findUser };
+async function findUserRaw(email: string) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        email: true,
+        password: true,
+        user_id: true,
+      },
+    });
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { createUser, findUser, findUserRaw };

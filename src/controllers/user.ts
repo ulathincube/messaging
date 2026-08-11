@@ -1,7 +1,7 @@
-import { createUser, findUser } from '../models/user.js';
+import { createUser, findUser, findUserRaw } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
 import { User, Query } from '../lib/zod.js';
-import { hashPassword } from '../lib/bcrypt.js';
+import { hashPassword, comparePassword } from '../lib/bcrypt.js';
 
 async function createUserController(
   req: Request,
@@ -44,4 +44,25 @@ async function findUserController(
   }
 }
 
-export { createUserController, findUserController };
+async function loginUserController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { email, password } = User.parse(req.body);
+    const user = await findUserRaw(email);
+
+    if (!user) throw new Error('Invalid login credentials');
+    const match = await comparePassword(password, user.password);
+
+    if (!match) throw new Error('Invalid login credentials');
+
+    req.session.user = user.user_id;
+    res.status(200).json({ user });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { createUserController, findUserController, loginUserController };

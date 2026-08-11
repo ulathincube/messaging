@@ -11,4 +11,13 @@ async function hashPassword(password: string) {
   }
 }
 
-export { hashPassword };
+async function comparePassword(password: string, hashedPassword: string) {
+  try {
+    const match = await bcrypt.compare(password, hashedPassword);
+    return match;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { hashPassword, comparePassword };
