@@ -20,4 +20,9 @@ const Profile = z.object({
   status: z.string(),
 });
 
-export { User, Message, Query, Profile };
+const UsersQuery = z.object({
+  sender: z.string(),
+  receiver: z.string(),
+});
+
+export { User, Message, Query, Profile, UsersQuery };

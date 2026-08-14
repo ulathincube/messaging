@@ -1,6 +1,11 @@
-import { createUser, findUser, findUserRaw } from '../models/user.js';
+import {
+  createUser,
+  findUser,
+  findUserRaw,
+  findChats,
+} from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
-import { User, Query } from '../lib/zod.js';
+import { User, Query, UsersQuery } from '../lib/zod.js';
 import { hashPassword, comparePassword } from '../lib/bcrypt.js';
 
 async function createUserController(
@@ -66,4 +71,27 @@ async function loginUserController(
   }
 }
 
-export { createUserController, findUserController, loginUserController };
+async function findUserChatsController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  const { sender, receiver } = UsersQuery.parse(req.query);
+
+  try {
+    const chats = await findChats(sender, receiver);
+
+    return res
+      .status(200)
+      .json({ data: chats, message: 'Chats found!', error: null });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export {
+  createUserController,
+  findUserController,
+  loginUserController,
+  findUserChatsController,
+};

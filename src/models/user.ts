@@ -79,4 +79,39 @@ async function findUserRaw(email: string) {
   }
 }
 
-export { createUser, findUser, findUserRaw };
+async function findChats(sender: string, receiver: string) {
+  try {
+    const messages = await prisma.message.findMany({
+      where: {
+        OR: [
+          {
+            sender: {
+              email: sender,
+            },
+            receiver: {
+              email: receiver,
+            },
+          },
+          {
+            sender: {
+              email: receiver,
+            },
+            receiver: {
+              email: sender,
+            },
+          },
+        ],
+      },
+      orderBy: {
+        sent_time: 'asc',
+      },
+    });
+
+    console.log({ messages });
+    return messages;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export { createUser, findUser, findUserRaw, findChats };
