@@ -3,9 +3,10 @@ import {
   findUser,
   findUserRaw,
   findChats,
+  findContacts,
 } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
-import { User, Query, UsersQuery } from '../lib/zod.js';
+import { User, Query, UsersQuery, UserParam } from '../lib/zod.js';
 import { hashPassword, comparePassword } from '../lib/bcrypt.js';
 
 async function createUserController(
@@ -89,9 +90,26 @@ async function findUserChatsController(
   }
 }
 
+async function findContactsController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { email } = UserParam.parse(req.params);
+    const contacts = await findContacts(email);
+    return res
+      .status(200)
+      .json({ data: contacts, error: null, message: 'Contacts found' });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   createUserController,
   findUserController,
   loginUserController,
   findUserChatsController,
+  findContactsController,
 };

@@ -5,6 +5,10 @@ const User = z.object({
   password: z.string(),
 });
 
+const UserParam = z.object({
+  email: z.email(),
+});
+
 const Message = z.object({
   text: z.string(),
   sender: z.email(),
@@ -25,4 +29,4 @@ const UsersQuery = z.object({
   receiver: z.string(),
 });
 
-export { User, Message, Query, Profile, UsersQuery };
+export { User, Message, Query, Profile, UsersQuery, UserParam };

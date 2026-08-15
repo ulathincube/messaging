@@ -114,4 +114,70 @@ async function findChats(sender: string, receiver: string) {
   }
 }
 
-export { createUser, findUser, findUserRaw, findChats };
+async function findContacts(email: string) {
+  // what does this all mean?
+  try {
+    const contacts = await prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            receivedMessages: {
+              some: {
+                OR: [
+                  {
+                    sender: {
+                      email,
+                    },
+                  },
+                  {
+                    receiver: {
+                      email,
+                    },
+                  },
+                ],
+              },
+            },
+          },
+          {
+            sentMessages: {
+              some: {
+                OR: [
+                  {
+                    sender: {
+                      email,
+                    },
+                  },
+                  {
+                    receiver: {
+                      email,
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+        NOT: {
+          sentMessages: {
+            some: {
+              sender: {
+                email,
+              },
+            },
+          },
+        },
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    return contacts;
+  } catch (error) {
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export { createUser, findUser, findUserRaw, findChats, findContacts };
