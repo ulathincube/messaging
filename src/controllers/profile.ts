@@ -1,6 +1,6 @@
-import { createProfile } from '../models/profile.js';
+import { createProfile, getStatus } from '../models/profile.js';
 import type { Request, Response, NextFunction } from 'express';
-import { Profile } from '../lib/zod.js';
+import { Profile, UserParam } from '../lib/zod.js';
 
 async function createProfileController(
   req: Request,
@@ -20,4 +20,21 @@ async function createProfileController(
   }
 }
 
-export { createProfileController };
+async function getStatusController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { email } = UserParam.parse(req.params);
+    const response = await getStatus(email);
+
+    return res
+      .status(200)
+      .json({ data: response, error: null, message: 'Status found!' });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { createProfileController, getStatusController };
