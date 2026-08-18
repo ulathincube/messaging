@@ -66,7 +66,13 @@ async function loginUserController(
     if (!match) throw new Error('Invalid login credentials');
 
     req.session.user = user.user_id;
-    res.status(200).json({ email: user.email, userId: user.user_id });
+    res
+      .status(200)
+      .json({
+        data: { email: user.email, userId: user.user_id },
+        error: null,
+        message: 'User logged in!',
+      });
   } catch (error) {
     next(error);
   }
