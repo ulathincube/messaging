@@ -34,10 +34,10 @@ app.use(
   }),
 );
 
-app.use('/users', userRouter);
-app.use('/messages', messageRouter);
-app.use('/profile', profileRouter);
-app.use('/', indexRouter);
+app.use('/api/users', userRouter);
+app.use('/api/messages', messageRouter);
+app.use('/api/profile', profileRouter);
+app.use('/api/', indexRouter);
 
 app.use(notFound);
 app.use(errorHandler);

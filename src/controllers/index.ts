@@ -7,4 +7,8 @@ function showServerHealth(req: Request, res: Response, next: NextFunction) {
     .json({ error: null, data: null, message: 'Health 100' });
 }
 
-export { showServerHealth };
+function wakeServerUp(req: Request, res: Response, next: NextFunction) {
+  res.status(200).json({ message: 'Waking up!', error: null, data: null });
+}
+
+export { showServerHealth, wakeServerUp };

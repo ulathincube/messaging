@@ -73,6 +73,7 @@ async function findUserRaw(email: string) {
         user_id: true,
       },
     });
+    console.log({ user });
     return user;
   } catch (error) {
     throw error;
