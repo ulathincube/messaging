@@ -4,6 +4,7 @@ import {
   findUserRaw,
   findChats,
   findContacts,
+  findAllUsers,
 } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
 import { User, Query, UsersQuery, UserParam } from '../lib/zod.js';
@@ -66,13 +67,11 @@ async function loginUserController(
     if (!match) throw new Error('Invalid login credentials');
 
     req.session.user = user.user_id;
-    res
-      .status(200)
-      .json({
-        data: { email: user.email, userId: user.user_id },
-        error: null,
-        message: 'User logged in!',
-      });
+    res.status(200).json({
+      data: { email: user.email, userId: user.user_id },
+      error: null,
+      message: 'User logged in!',
+    });
   } catch (error) {
     next(error);
   }
@@ -112,10 +111,25 @@ async function findContactsController(
   }
 }
 
+async function findAllUsersController(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const allUsers = await findAllUsers();
+    return res
+      .status(200)
+      .json({ data: allUsers, error: null, message: 'Users found!' });
+  } catch (error) {
+    next(error);
+  }
+}
 export {
   createUserController,
   findUserController,
   loginUserController,
   findUserChatsController,
   findContactsController,
+  findAllUsersController,
 };

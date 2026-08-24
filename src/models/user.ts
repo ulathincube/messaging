@@ -181,4 +181,22 @@ async function findContacts(email: string) {
   }
 }
 
-export { createUser, findUser, findUserRaw, findChats, findContacts };
+async function findAllUsers() {
+  try {
+    const allUsers = await prisma.user.findMany();
+    return allUsers;
+  } catch (error) {
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export {
+  createUser,
+  findUser,
+  findUserRaw,
+  findChats,
+  findContacts,
+  findAllUsers,
+};
