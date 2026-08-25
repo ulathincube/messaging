@@ -30,7 +30,7 @@ model User {
 
 model Profile {
   profile_id Int    @id @default(autoincrement())
-  status     String
+  status     String @default("Available")
   user       User   @relation(fields: [userId], references: [user_id])
   userId     Int    @unique
 }

@@ -9,8 +9,8 @@ function errorHandler(
   console.log({ ...error });
   res.status(500).json({
     data: null,
-    error: 'Something wrong occurred',
-    message: 'An error was encountered',
+    error,
+    message: error.message || 'Server error: Something went wrong!',
   });
 }
 
