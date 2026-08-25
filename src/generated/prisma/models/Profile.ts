@@ -245,13 +245,13 @@ export type ProfileScalarWhereWithAggregatesInput = {
 }
 
 export type ProfileCreateInput = {
-  status: string
+  status?: string
   user: Prisma.UserCreateNestedOneWithoutProfileInput
 }
 
 export type ProfileUncheckedCreateInput = {
   profile_id?: number
-  status: string
+  status?: string
   userId: number
 }
 
@@ -268,7 +268,7 @@ export type ProfileUncheckedUpdateInput = {
 
 export type ProfileCreateManyInput = {
   profile_id?: number
-  status: string
+  status?: string
   userId: number
 }
 
@@ -348,12 +348,12 @@ export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
 }
 
 export type ProfileCreateWithoutUserInput = {
-  status: string
+  status?: string
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
   profile_id?: number
-  status: string
+  status?: string
 }
 
 export type ProfileCreateOrConnectWithoutUserInput = {
