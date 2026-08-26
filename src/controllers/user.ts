@@ -5,9 +5,10 @@ import {
   findChats,
   findContacts,
   findAllUsers,
+  updatePassword,
 } from '../models/user.js';
 import type { Response, Request, NextFunction } from 'express';
-import { User, Query, UsersQuery, UserParam } from '../lib/zod.js';
+import { User, Query, UsersQuery, UserParam, Password } from '../lib/zod.js';
 import { hashPassword, comparePassword } from '../lib/bcrypt.js';
 
 async function createUserController(
@@ -125,6 +126,46 @@ async function findAllUsersController(
     next(error);
   }
 }
+
+async function startPasswordReset(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { email } = UserParam.parse(req.body);
+    const user = await findUserRaw(email);
+    if (!user) throw new Error('User not found!');
+    res.json({ data: true, error: null, message: 'Reset password' });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function finishResetPassword(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const { email } = UserParam.parse(req.params);
+    const { password } = Password.parse(req.body);
+    const user = await findUserRaw(email);
+    const hashedPassword = await hashPassword(password);
+    const updatedUser = await updatePassword({
+      email,
+      password: hashedPassword,
+    });
+    res.json({
+      data: updatedUser,
+      error: null,
+      message: 'Password reset successful',
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 export {
   createUserController,
   findUserController,
@@ -132,4 +173,6 @@ export {
   findUserChatsController,
   findContactsController,
   findAllUsersController,
+  startPasswordReset,
+  finishResetPassword,
 };

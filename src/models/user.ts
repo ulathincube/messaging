@@ -73,7 +73,7 @@ async function findUserRaw(email: string) {
         user_id: true,
       },
     });
-    console.log({ user });
+
     return user;
   } catch (error) {
     throw error;
@@ -192,6 +192,24 @@ async function findAllUsers() {
   }
 }
 
+async function updatePassword({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) {
+  const updateUser = await prisma.user.update({
+    where: {
+      email,
+    },
+    data: {
+      password,
+    },
+  });
+  return updateUser;
+}
+
 export {
   createUser,
   findUser,
@@ -199,4 +217,5 @@ export {
   findChats,
   findContacts,
   findAllUsers,
+  updatePassword,
 };

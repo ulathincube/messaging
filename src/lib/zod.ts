@@ -29,4 +29,8 @@ const UsersQuery = z.object({
   receiver: z.string(),
 });
 
-export { User, Message, Query, Profile, UsersQuery, UserParam };
+const Password = z.object({
+  password: z.string(),
+});
+
+export { User, Message, Query, Profile, UsersQuery, UserParam, Password };
