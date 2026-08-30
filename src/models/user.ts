@@ -108,7 +108,6 @@ async function findChats(sender: string, receiver: string) {
       },
     });
 
-    console.log({ messages });
     return messages;
   } catch (error) {
     throw error;
@@ -183,7 +182,13 @@ async function findContacts(email: string) {
 
 async function findAllUsers() {
   try {
-    const allUsers = await prisma.user.findMany();
+    const allUsers = await prisma.user.findMany({
+      select: {
+        user_id: true,
+        email: true,
+        profile: true,
+      },
+    });
     return allUsers;
   } catch (error) {
     throw error;

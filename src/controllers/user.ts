@@ -20,23 +20,28 @@ async function createUserController(
     const { email, password } = User.parse(req.body);
 
     const user = await createUser(email, await hashPassword(password));
-    return res
-      .status(201)
-      .json({ message: 'User successfully created', error: null, data: user });
+    return res.status(201).json({
+      message: 'User successfully created',
+      error: null,
+      data: 'User created!',
+    });
   } catch (error) {
     next(error);
   }
 }
 
+//not in use
 async function findUserController(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
+    console.log('RUNNING!!!');
     const { query } = Query.parse(req.query);
 
-    console.log(query);
+    console.log({ query });
+
     //  zod
     const user = await findUser(query);
     if (!user)
@@ -96,6 +101,7 @@ async function findUserChatsController(
   }
 }
 
+// not in use
 async function findContactsController(
   req: Request,
   res: Response,
@@ -157,7 +163,7 @@ async function finishResetPassword(
       password: hashedPassword,
     });
     res.json({
-      data: updatedUser,
+      data: true,
       error: null,
       message: 'Password reset successful',
     });

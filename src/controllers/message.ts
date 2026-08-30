@@ -10,10 +10,11 @@ async function createMessageController(
   try {
     const { text, sender, receiver } = Message.parse(req.body);
     const message = await createMessage(text, sender, receiver);
+
     return res.status(201).json({
       message: 'Message sent successfully',
       error: null,
-      data: message,
+      data: 'Message sent!',
     });
   } catch (error) {
     next(error);
