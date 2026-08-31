@@ -37,10 +37,7 @@ async function findUserController(
   next: NextFunction,
 ) {
   try {
-    console.log('RUNNING!!!');
     const { query } = Query.parse(req.query);
-
-    console.log({ query });
 
     //  zod
     const user = await findUser(query);

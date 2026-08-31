@@ -6,8 +6,8 @@ function errorHandler(
   res: Response,
   next: NextFunction,
 ) {
-  console.log({ ...error });
-  res.status(500).json({
+  const { status } = error;
+  res.status(status || 500).json({
     data: null,
     error,
     message: error.message || 'Server error: Something went wrong!',
