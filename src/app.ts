@@ -39,7 +39,7 @@ app.use(
 app.use('/api/users', userRouter);
 app.use('/api/messages', messageRouter);
 app.use('/api/profile', profileRouter);
-app.use('/api/', indexRouter);
+app.use('/api/index', indexRouter);
 
 app.use(notFound);
 app.use(errorHandler);
